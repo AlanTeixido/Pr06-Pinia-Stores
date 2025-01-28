@@ -33,11 +33,19 @@ export const useCartStore = defineStore("CartStore", {
         updateItemCount(name, newCount) {
             newCount = parseInt(newCount);
             if (newCount <= 0) {
-                this.removeItem(name); 
+                this.removeItem(name);
             } else {
-                this.items = this.items.filter(item => item.name !== name);
-                for (let i = 0; i < newCount; i++) {
-                    this.items.push({ name: name });
+                // Buscar el producte original per recuperar totes les dades
+                const productRef = this.items.find(item => item.name === name);
+                
+                if (productRef) {
+                    // Eliminar totes les entrades d'aquest producte
+                    this.items = this.items.filter(item => item.name !== name);
+                    
+                    // Tornar a afegir-lo amb la nova quantitat, mantenint les propietats
+                    for (let i = 0; i < newCount; i++) {
+                        this.items.push({ ...productRef });
+                    }
                 }
             }
             console.log(`Quantitat actualitzada: ${name} - ${newCount} unitats`);

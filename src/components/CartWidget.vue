@@ -22,17 +22,26 @@ const cartStore = useCartStore();
           <CartItem
             v-for="(items, name) in cartStore.grouped"
             :key="name"
-            :product="{ name: name, price: items[0].price }"
+            :product="{ name: name, price: items[0]?.price || 0 }"
             :count="items.length"
             @updateCount="cartStore.updateItemCount(name, $event)"
             @clear="cartStore.removeItem(name)"
           />
         </ul>
         <div class="flex justify-end text-2xl mb-5">
-          Total: <strong>${{ cartStore.items.reduce((sum, item) => sum + item.price, 0).toFixed(2) }}</strong>
+          Total:
+          <strong
+            >${{
+              cartStore.items
+                .reduce((sum, item) => sum + item.price, 0)
+                .toFixed(2)
+            }}</strong
+          >
         </div>
         <div class="flex justify-end">
-          <AppButton class="secondary mr-2" @click="cartStore.clearCart()">Clear Cart</AppButton>
+          <AppButton class="secondary mr-2" @click="cartStore.clearCart()"
+            >Clear Cart</AppButton
+          >
           <AppButton class="primary">Checkout</AppButton>
         </div>
       </div>
@@ -42,4 +51,3 @@ const cartStore = useCartStore();
     </AppModalOverlay>
   </div>
 </template>
-
