@@ -24,15 +24,15 @@ const cartStore = useCartStore();
             :key="name"
             :product="{ name: name, price: items[0].price }"
             :count="items.length"
-            @updateCount=""
-            @clear=""
+            @updateCount="cartStore.updateItemCount(name, $event)"
+            @clear="cartStore.removeItem(name)"
           />
         </ul>
         <div class="flex justify-end text-2xl mb-5">
-          Total: <strong>${{ cartStore.items.reduce((sum, item) => sum + item.price, 0) }}</strong>
+          Total: <strong>${{ cartStore.items.reduce((sum, item) => sum + item.price, 0).toFixed(2) }}</strong>
         </div>
         <div class="flex justify-end">
-          <AppButton class="secondary mr-2" @click="cartStore.items = []">Clear Cart</AppButton>
+          <AppButton class="secondary mr-2" @click="cartStore.clearCart()">Clear Cart</AppButton>
           <AppButton class="primary">Checkout</AppButton>
         </div>
       </div>
@@ -42,3 +42,4 @@ const cartStore = useCartStore();
     </AppModalOverlay>
   </div>
 </template>
+

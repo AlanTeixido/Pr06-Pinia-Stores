@@ -18,8 +18,9 @@ productStore.fill();
       v-for="product in productStore.products"
       :key="product.name"
       :product="product"
-      @addToCart="(count, product) => cartStore.addToCart(count, product)"
-      />         
+      @addToCart="(count, product) => cartStore.addItems(count, product)"
+    />
+       
     </ul>
   </div>
 </template>
