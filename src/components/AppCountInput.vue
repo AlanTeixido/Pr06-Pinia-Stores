@@ -1,27 +1,23 @@
 <script setup>
-defineProps({
-  modelValue: { type: [Number, String], default: 0 },
-});
+import { defineProps, defineEmits } from "vue";
 
-const emit = defineEmits(["update:modelValue", "input"]);
-const updateValue = (value) => emit("update:modelValue", value);
+const props = defineProps(["modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
+
+const updateValue = (newValue) => {
+  let parsedValue = parseInt(newValue) || 1;
+  if (parsedValue < 1) parsedValue = 1; 
+  emit("update:modelValue", parsedValue); 
+};
 </script>
+
+
 <template>
-  <span>
-    <button
-      class="cursor-pointer bg-gray-200 px-2 rounded-l"
-      @click="updateValue(modelValue > 0 ? modelValue - 1 : null)"
-    >
-      -
-    </button>
-    <input :value="modelValue" type="number" min="0" @input="updateValue" />
-    <button
-      class="bg-gray-200 px-2 rounded-r cursor-pointer"
-      @click="updateValue(modelValue + 1)"
-    >
-      +
-    </button>
-  </span>
+  <div class="count-input">
+    <button @click="updateValue(modelValue - 1)">-</button>
+    <input type="number" :value="modelValue" @input="updateValue($event.target.value)" />
+    <button @click="updateValue(modelValue + 1)">+</button>
+  </div>
 </template>
 
 <style scoped>

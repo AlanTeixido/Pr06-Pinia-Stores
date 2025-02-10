@@ -25,13 +25,16 @@ const count = ref(0);
       <AppButton
       class="primary"
       @click="() => { 
-          console.log('Emit event:', count, product);
-          $emit('addToCart', count, product);
-          count = 0;
+          if (count > 0) {
+              console.log('Emit event:', count, product);
+              $emit('addToCart', count, product);
+              count = 1;
+          }
       }"
     >
       Add to Cart
-    </AppButton>    
+    </AppButton>
+    
     </div>
   </li>
 </template>

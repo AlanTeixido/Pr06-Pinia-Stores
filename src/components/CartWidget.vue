@@ -20,28 +20,21 @@ const cartStore = useCartStore();
       <div v-if="!cartStore.isEmpty">
         <ul class="items-in-cart">
           <CartItem
-            v-for="(items, name) in cartStore.grouped"
-            :key="name"
-            :product="{ name: name, price: items[0]?.price || 0 }"
-            :count="items.length"
-            @updateCount="cartStore.updateItemCount(name, $event)"
-            @clear="cartStore.removeItem(name)"
-          />
+          v-for="(items, name) in cartStore.grouped"
+          :key="name"
+          :product="{ name: name, price: items[0]?.price || 0 }"
+          :count="cartStore.groupCount(name)"
+          @updateCount="cartStore.setItemCount(items[0], $event)"
+          @clear="cartStore.clearItem(name)"
+        />
+        
         </ul>
         <div class="flex justify-end text-2xl mb-5">
-          Total:
-          <strong
-            >${{
-              cartStore.items
-                .reduce((sum, item) => sum + item.price, 0)
-                .toFixed(2)
-            }}</strong
-          >
+          Total: <strong>${{ cartStore.total.toFixed(2) }}</strong>
         </div>
+        
         <div class="flex justify-end">
-          <AppButton class="secondary mr-2" @click="cartStore.clearCart()"
-            >Clear Cart</AppButton
-          >
+          <AppButton class="secondary mr-2" @click="cartStore.$reset()">Clear Cart</AppButton>
           <AppButton class="primary">Checkout</AppButton>
         </div>
       </div>
